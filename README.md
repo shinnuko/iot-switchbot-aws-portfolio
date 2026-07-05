@@ -200,4 +200,4 @@ S3保存先の日付別フォルダ化
 ExcelやPower BIによる可視化
 異常値検知とメール通知
 PLCデータとの連携
-AWS LambdaやAmazon QuickSightとの連携
+
