@@ -1,33 +1,76 @@
 import json
+import time
+from pathlib import Path
+
 import paho.mqtt.client as mqtt
 
 
 # =====================================
-# MQTT送信
-# センサーデータをMQTTブローカーへ送信する
+# MQTT設定
 # =====================================
-def send_mqtt(data):
-    broker = "localhost"
-    port = 1883
-    topic = "iot_portfolio/switchbot/room"
+MQTT_BROKER = "localhost"
+MQTT_PORT = 1883
+MQTT_TOPIC = "iot_portfolio/switchbot"
 
-    try:
-        print("MQTT接続開始")
+# 送信するJSONファイル
+DATA_FILE = Path("data/sample.json")
 
-        client = mqtt.Client()
-        client.connect(broker, port, 10)
 
-        payload = json.dumps(data, ensure_ascii=False)
+def send_mqtt():
+    # -----------------------------
+    # JSONファイル存在確認
+    # -----------------------------
+    if not DATA_FILE.exists():
+        print("data/sample.json が見つかりません。")
+        return
 
-        result = client.publish(topic, payload)
-        result.wait_for_publish()
+    # -----------------------------
+    # JSONファイル読み込み
+    # -----------------------------
+    with open(DATA_FILE, "r", encoding="utf-8") as f:
+        data = json.load(f)
 
-        client.disconnect()
+    payload = json.dumps(data, ensure_ascii=False)
 
-        print("MQTT送信成功")
-        print("Topic:", topic)
-        print("Payload:", payload)
+    # -----------------------------
+    # MQTTクライアント作成
+    # -----------------------------
+    client = mqtt.Client(
+        mqtt.CallbackAPIVersion.VERSION2,
+        client_id=f"switchbot-publisher-{int(time.time())}"
+    )
 
-    except Exception as e:
-        print("MQTT送信失敗")
-        print("エラー内容:", e)
+    # -----------------------------
+    # MQTTブローカーへ接続
+    # -----------------------------
+    print("MQTTブローカーへ接続します")
+    print(f"Broker: {MQTT_BROKER}")
+    print(f"Port: {MQTT_PORT}")
+    print(f"Topic: {MQTT_TOPIC}")
+
+    client.connect(MQTT_BROKER, MQTT_PORT, 60)
+
+    # -----------------------------
+    # MQTT送信
+    # -----------------------------
+    client.loop_start()
+
+    result = client.publish(
+        MQTT_TOPIC,
+        payload,
+        qos=0,
+        retain=True
+    )
+
+    result.wait_for_publish()
+
+    client.loop_stop()
+    client.disconnect()
+
+    print("MQTT送信が完了しました")
+    print("送信データ:")
+    print(payload)
+
+
+if __name__ == "__main__":
+    send_mqtt()

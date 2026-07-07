@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 
+from switchbot import save_switchbot_data
 from aws_sender import upload_to_s3
 
 
@@ -10,7 +11,6 @@ DATA_FILE = Path("data/sample.json")
 def show_sensor_data():
     if not DATA_FILE.exists():
         print("data/sample.json が見つかりません。")
-        print("先にSwitchBotデータ取得処理を実行してください。")
         return False
 
     with open(DATA_FILE, "r", encoding="utf-8") as f:
@@ -29,6 +29,10 @@ def show_sensor_data():
 def main():
     print("IoTポートフォリオ処理を開始します")
 
+    print("SwitchBotから最新データを取得します")
+    save_switchbot_data()
+
+    print("取得したデータを確認します")
     if not show_sensor_data():
         return
 
