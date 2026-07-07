@@ -82,6 +82,21 @@ IOT ポートフォリオ/
 ├─ aws_sender.py
 └─ config.py
 
+各ファイルの役割
+ファイル	役割
+main.py	全体を動かすメイン処理
+config.py	設定値をまとめるファイル
+switchbot.py	SwitchBotから温度・湿度・CO2を取得する処理
+mqtt_sender.py	MQTTでデータを送信する処理
+opcua_server.py	OPC UAサーバーとしてデータを公開する処理
+aws_sender.py	AWS S3へJSONファイルをアップロードする処理
+data/sample.json	取得したセンサーデータの保存ファイル
+.env	APIキーやAWSアクセスキーなどの秘密情報
+.gitignore	GitHubに上げないファイルを指定
+requirements.txt	必要なPythonライブラリ一覧
+README.md	システム説明書・ポートフォリオ説明
+logs/	実行ログやエラー記録の保存場所
+
 セキュリティ対策
 AWSアクセスキーやSwitchBot APIトークンは .env に保存し、GitHubへアップロードしないよう .gitignore に登録しています。
 
