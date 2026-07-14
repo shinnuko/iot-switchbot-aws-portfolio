@@ -124,3 +124,20 @@ EQUIPMENT_NAME = "SwitchBot_Sensor_01"
 
 # 製造現場でデータを管理する場合の想定ステータス
 DEFAULT_STATUS = "running"
+
+# =====================================
+# WBGT / 熱中症アラート設定
+# =====================================
+
+# 簡易WBGTの危険判定しきい値
+# 環境省の目安では WBGT 31以上が「運動は原則中止」相当
+WBGT_DANGER_THRESHOLD = 31.0
+
+# 厳重警戒のしきい値
+WBGT_SEVERE_WARNING_THRESHOLD = 28.0
+
+# 警戒のしきい値
+WBGT_WARNING_THRESHOLD = 25.0
+
+# CSVログ保存先
+SENSOR_LOG_CSV_PATH = "data/sensor_log.csv"

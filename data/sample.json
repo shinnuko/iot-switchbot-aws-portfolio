@@ -1,7 +1,9 @@
 {
-    "timestamp": "2026-07-07 16:17:10",
-    "temperature": 25.8,
-    "humidity": 46,
-    "co2": 733,
-    "battery": 96
+    "timestamp": "2026-07-14 23:03:04",
+    "temperature": 25,
+    "humidity": 42,
+    "co2": 705,
+    "battery": 96,
+    "wbgt": 23.0,
+    "wbgt_level": "注意"
 }
